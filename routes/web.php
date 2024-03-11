@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\userController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -38,3 +39,13 @@ Route::get('/team', function () {
 Route::get('/stadium', function () {
     return view('stadium');
 });
+
+
+
+Route::post('','userController@Userregister');
+Route::post('','userController@Userlogin');
+Route::post('','userController@Userlogout');
+
+Route::post('','userController@Adminregister');
+Route::post('','userController@Adminlogin');
+Route::post('','userController@Adminlogout');

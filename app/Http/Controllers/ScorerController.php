@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Routing\Controller;
 
 use App\Models\scorer;
 use Illuminate\Http\Request;
