@@ -10,9 +10,15 @@ class schedule extends Model
     use HasFactory;
     protected $fillable = [
         'match_time',
-        'stadium_id'
+        'stadium_id',
     ];
     public function stadium(){
-        return $this->belongsTo(stadium::class);
+        return $this->belongsTo(Stadium::class);
+    }
+    public function scorers(){
+        return $this->hasMany(Scorer::class);
+    }
+    public function tickets(){
+        return $this->hasMany(Ticket::class);
     }
 }

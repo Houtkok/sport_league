@@ -8,10 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class stadium extends Model
 {
     use HasFactory;
-    protected $table = ['stadia'];
     protected $fillable = [
         'stadium_name',
         'capacity',
         'location'
     ];
+    public function schedules(){
+        return $this->hasMany(Schedule::class);
+    }
 }

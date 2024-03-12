@@ -12,7 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('purchases', function (Blueprint $table) {
-            $table->id();
+            $table->increments('purchase_id');
+            $table->decimal('price', 10, 2);
+            $table->unsignedInteger('qty');
+            $table->dateTime('purchase_date');
             $table->timestamps();
         });
     }

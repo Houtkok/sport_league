@@ -1,10 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Routing\Controller;
 
 use App\Models\stadium;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 
 class StadiumController extends Controller
 {

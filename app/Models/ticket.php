@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class ticket extends Model
 {
     use HasFactory;
-    protected $table = ['tickets'];
     protected $fillable = [
         'seat_num',
         'seat_type',
@@ -16,7 +15,7 @@ class ticket extends Model
         'price',
         'match_id',
         'user_id',
-        'purchase_id'
+        'purchase_id',
     ];
     public function match(){
         return $this->belongsTo(schedule::class);

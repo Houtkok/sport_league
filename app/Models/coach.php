@@ -8,9 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class coach extends Model
 {
     use HasFactory;
-    protected $table = ['coaches'];
     protected $fillable = [
-        'coach_name'
+        'coach_name',
     ];
-
+    public function teams()
+    {
+        return $this->hasMany(Team::class);
+    }
 }

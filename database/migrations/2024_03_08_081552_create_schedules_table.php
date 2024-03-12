@@ -12,7 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('schedules', function (Blueprint $table) {
-            $table->id();
+            $table->increments('match_id');
+            $table->date('match_time');
+            $table->unsignedInteger('stadium_id');
+            $table->unsignedInteger('team_id');
+            $table->foreign('stadium_id')->references('stadium_id')->on('stadia')->onDelete('cascade');
+            $table->foreign('team_id')->references('team_id')->on('teams')->onDelete('cascade');
             $table->timestamps();
         });
     }

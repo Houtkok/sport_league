@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class scorer extends Model
 {
     use HasFactory;
-    protected $table = ['scorers'];
     protected $fillable = [
         'goal_time',
         'player_id',

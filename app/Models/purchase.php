@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class purchase extends Model
 {
     use HasFactory;
-    protected $table = ['purchases'];
     protected $fillable = [
         'total_amount',
         'purchase_date',
@@ -16,5 +15,8 @@ class purchase extends Model
     ];
     public function user(){
         return $this->belongsTo(User::class);
+    }
+    public function tickets(){
+        return $this->hasMany(Ticket::class);
     }
 }

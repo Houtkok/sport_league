@@ -8,8 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class national extends Model
 {
     use HasFactory;
-    protected $table = ['nationals'];
     protected $fillable = [
-        'national_name'
+        'national_name',
     ];
+    public function players(){
+        return $this->hasMany(Player::class);
+    }
 }

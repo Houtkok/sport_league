@@ -1,10 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Routing\Controller;
 
 use App\Models\team;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 
 class TeamController extends Controller
 {
