@@ -10,7 +10,8 @@ class team extends Model
     use HasFactory;
     protected $fillable = [
         'team_name',
-        'coach_id'
+        'coach_id',
+        'player_id'
     ];
     public function coach(){
         return $this->belongsTo(Coach::class);

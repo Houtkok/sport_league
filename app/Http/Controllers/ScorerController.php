@@ -8,59 +8,39 @@ use Illuminate\Routing\Controller;
 
 class ScorerController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
+    public function show(){
+        $scorers = scorer::all();
+        return view('',['scorers'=>$scorers]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+    public function create(Request $request){
+        $request->validate([
+            'goal_count'=>'required|integer',
+            'goal_time'=>'required|date',
+        ]);
+        $scorers = scorer::create([
+            'goal_count'=>$request->input('goal_count'),
+            'goal_time'=>$request->input('goal_time'),
+        ]);
+        return ;
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+    public function update(Request $request, scorer $scorers_id){
+        $scorers = scorer::findOrFail($scorers_id);
+        $request->validate([
+            'goal_count'=>'required|integer',
+            'goal_time'=>'required|date',
+        ]);
+        $scorers->update([
+            'goal_count'=>$request->input('goal_count'),
+            'goal_time'=>$request->input('goal_time'),
+        ]);
+        return ;
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(scorer $scorer)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(scorer $scorer)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, scorer $scorer)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(scorer $scorer)
-    {
-        //
+    public function destroy(scorer $scorer_id){
+        $scorers=scorer::findOrFail($scorer_id);
+        $scorers->delete();
+        return ;
     }
 }

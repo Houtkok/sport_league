@@ -8,59 +8,56 @@ use Illuminate\Routing\Controller;
 
 class PlayerController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
+    public function show(){
+        $players = player::all();
+        return view('',['players'=>$players]);;
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+    public function create(Request $request){
+        $request->validate([
+            'player_id'=>'required|integer|unique:players',
+            'player_fname'=>'required|string|max:255',
+            'player_lanme'=>'required|string|max:255',
+            'dob'=>'required|date',
+            'position'=>'required|string',
+            'national_id'=>'required|integer|exists:national_id',
+            'scorer_id'=>'required|integer|exists:scorer_id',
+        ]);
+        $players = player::create([
+            'player_id'=>$request->input('player_id'),
+            'player_fname'=>$request->input('player_fname'),
+            'player_lanme'=>$request->input('player_lname'),
+            'dob'=>$request->input('dob'),
+            'position'=>$request->input('position'),
+            'national_id'=>$request->input('national_id'),
+            'scorer_id'=>$request->input('scorer_id'),
+        ]);
+        return ;
     }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+    public function update(Request $request, player $player_id){
+        $players = player::findOrFail($player_id);
+        $request->validate([
+            'player_id'=>'required|integer|unique:players',
+            'player_fname'=>'required|string|max:255',
+            'player_lanme'=>'required|string|max:255',
+            'dob'=>'required|date',
+            'position'=>'required|string',
+            'national_id'=>'required|integer|exists:national_id',
+            'scorer_id'=>'required|integer|exists:scorer_id',
+        ]);
+        $players->update([
+            'player_id'=>$request->input('player_id'),
+            'player_fname'=>$request->input('player_fname'),
+            'player_lanme'=>$request->input('player_lname'),
+            'dob'=>$request->input('dob'),
+            'position'=>$request->input('position'),
+            'national_id'=>$request->input('national_id'),
+            'scorer_id'=>$request->input('scorer_id'),
+        ]);
+        return ;
     }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(player $player)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(player $player)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, player $player)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(player $player)
-    {
-        //
+    public function destroy(player $player_id){
+        $players=player::findOrFail($player_id);
+        $players->delete();
+        return ;
     }
 }

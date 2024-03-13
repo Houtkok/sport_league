@@ -8,59 +8,42 @@ use Illuminate\Routing\Controller;
 
 class ScheduleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
+    public function show(){
+        $schedules = schedule::all();
+        return view('',['schedules'=>$schedules]);
+    }
+    public function create(Request $request){
+        $request->validate([
+            'match_time'=>'required|date',
+            'stadium_id'=>'required|integer|exists:stadium_id',
+            'team_id'=>'required|integer|exists:team_id',
+        ]);
+        $schedules = schedule::create([
+            'match_time'=>$request->input('match_time'),
+            'stadium_id'=>$request->input('stadium_id'),
+            'team_id'=>$request->input('team_id'),
+        ]);
+        return ;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+    public function update(Request $request, schedule $match_id){
+        $schedules = schedule::findOrFail($match_id);
+        $request->validate([
+            'match_time'=>'required|date',
+            'stadium_id'=>'required|integer|exists:stadium_id',
+            'team_id'=>'required|integer|exists:team_id',
+        ]);
+        $schedules->update([
+            'match_time'=>$request->input('match_time'),
+            'stadium_id'=>$request->input('stadium_id'),
+            'team_id'=>$request->input('team_id'),
+        ]);
+        return ;
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(schedule $schedule)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(schedule $schedule)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, schedule $schedule)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(schedule $schedule)
-    {
-        //
+    public function destroy(schedule $coach_id){
+        $schedules=schedule::findOrFail($coach_id);
+        $schedules->delete();
+        return ;
     }
 }

@@ -9,59 +9,35 @@ use Illuminate\Routing\Controller;
 
 class CoachController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
+    public function show(){
+        $coaches = coach::all();
+        return view('',['coaches'=>$coaches]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+    public function create(Request $request){
+        $request->validate([
+            'coach_name'=>'required|string|unique:coaches|max:255',
+        ]);
+        $coach = coach::create([
+            'coach_name'=>$request->input('coach_name'),
+        ]);
+        return ['coach'=>$coach];
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+    public function update(Request $request, coach $coach_id){
+        $coach = coach::findOrFail($coach_id);
+        $request->validate([
+            'coach_name'=>'required|string|unique:nationals|max:255',
+        ]);
+        $coach->update([
+            'coach_name'=>$request->input('coach_name'),
+        ]);
+        return ['coach_name'=>$coach];
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(coach $coach)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(coach $coach)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, coach $coach)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(coach $coach)
-    {
-        //
+    public function destroy(coach $coach_id){
+        $national=coach::findOrFail($coach_id);
+        $national->delete();
+        return ;
     }
 }

@@ -10,12 +10,9 @@ class scorer extends Model
     use HasFactory;
     protected $fillable = [
         'goal_time',
-        'player_id',
-        'match_id'
+        'goal_count',
     ];
-    public function player(){
-        return $this->belongsTo(player::class);
-    }
+    
     public function match(){
         return $this->belongsTo(schedule::class);
     }

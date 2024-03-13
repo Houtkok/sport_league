@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('scorers', function (Blueprint $table) {
             $table->increments('scorer_id');
+            $table->unsignedInteger('goal_count');
             $table->dateTime('goal_time');
             $table->timestamps();
         });

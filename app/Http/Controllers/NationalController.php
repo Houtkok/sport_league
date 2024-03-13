@@ -8,59 +8,32 @@ use Illuminate\Routing\Controller;
 
 class NationalController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
+    public function show(){
+        $nationals = national::all();
+        return view('',['nationals'=>$nationals]);
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+    public function create(Request $request){
+        $request->validate([
+            'national_name'=>'required|string|unique:nationals|max:255',
+        ]);
+        $nationals = national::create([
+            'national_name'=>$request->input('national_name'),
+        ]);
+        return ;
     }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+    public function update(Request $request, national $national_id){
+        $national = national::findOrFail($national_id);
+        $request->validate([
+            'national_name'=>'required|string|unique:nationals|max:255',
+        ]);
+        $national->update([
+            'national_name'=>$request->input('national_name'),
+        ]);
+        return ;
     }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(national $national)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(national $national)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, national $national)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(national $national)
-    {
-        //
+    public function destroy(national $national_id){
+        $national=national::findOrFail($national_id);
+        $national->delete();
+        return ;
     }
 }

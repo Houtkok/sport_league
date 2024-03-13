@@ -11,14 +11,13 @@ class schedule extends Model
     protected $fillable = [
         'match_time',
         'stadium_id',
+        'team_id'
     ];
     public function stadium(){
-        return $this->belongsTo(Stadium::class);
+        return $this->belongsTo(stadium::class);
     }
-    public function scorers(){
-        return $this->hasMany(Scorer::class);
+    public function team(){
+        return $this->hasMany(team::class);
     }
-    public function tickets(){
-        return $this->hasMany(Ticket::class);
-    }
+    
 }

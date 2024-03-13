@@ -11,19 +11,15 @@ class ticket extends Model
     protected $fillable = [
         'seat_num',
         'seat_type',
-        'purchase_date',
         'price',
+        'qty',
         'match_id',
         'user_id',
-        'purchase_id',
     ];
     public function match(){
         return $this->belongsTo(schedule::class);
     }
     public function user(){
         return $this->belongsTo(User::class);
-    }
-    public function purchase(){
-        return $this->belongsTo(purchase::class);
     }
 }

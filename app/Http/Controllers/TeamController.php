@@ -8,59 +8,42 @@ use Illuminate\Routing\Controller;
 
 class TeamController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
+    public function show(){
+        $teams = team::all();
+        return view('',['teams'=>$teams]);
+    }
+    public function create(Request $request){
+        $request->validate([
+            'team_name'=>'required|string|unique:teams|max:255',
+            'coach_id'=>'required|integer|exists:coach_id',
+            'player_id'=>'required|integer|exists:player_id',
+        ]);
+        $teams = team::create([
+            'team_name'=>$request->input('team_name'),
+            'coach_id'=>$request->input('coach_id'),
+            'player_id'=>$request->input('player_id'),
+        ]);
+        return ;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+    public function update(Request $request, team $stadium_id){
+        $teams = team::findOrFail($stadium_id);
+        $request->validate([
+            'team_name'=>'required|string|unique:teams|max:255',
+            'coach_id'=>'required|integer|exists:coach_id',
+            'player_id'=>'required|integer|exists:player_id',
+        ]);
+        $teams->update([
+            'team_name'=>$request->input('team_name'),
+            'coach_id'=>$request->input('coach_id'),
+            'player_id'=>$request->input('player_id'),
+        ]);
+        return ;
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(team $team)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(team $team)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, team $team)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(team $team)
-    {
-        //
+    public function destroy(team $team_id){
+        $teams=team::findOrFail($team_id);
+        $teams->delete();
+        return ;
     }
 }
