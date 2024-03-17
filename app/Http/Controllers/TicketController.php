@@ -51,4 +51,27 @@ class TicketController extends Controller
         $tickets->delete();
         return ;
     }
+    public function purchase(Request $request){
+        $request->validate([
+            'seat_num'=>'required|string|max:255',
+            'seat_type'=>'required|string|max:255',
+            'match_id'=>'required|integer|exists:match_id',
+            'user_id'=>'required|integer|exists:user_id',
+            'qty'=>'required|integer|min:1',
+        ]);
+        $match_id=$request->input('match_id');
+        $qty=$request->input('qty');
+
+        $tickets=Ticket::where ('match_id',$match_id)->take($qty)->get();
+        if($tickets->count()<$qty){
+            return false;
+        }
+        foreach($tickets as $ticket){
+            $ticket->user_id=$request->input('user_id');
+            $ticket->save();
+        }
+        $remainQty=$ticket->count()-$qty;
+        Ticket::where('match_id',$match_id)->take($remainQty)->update(['user_id'=>null]);
+        return ;
+    }
 }
