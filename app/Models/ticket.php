@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class ticket extends Model
 {
     use HasFactory;
+    protected $primaryKey='ticket_id';
     protected $fillable = [
-        'seat_num',
         'seat_type',
         'price',
         'qty',

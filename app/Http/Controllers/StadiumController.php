@@ -4,47 +4,52 @@ namespace App\Http\Controllers;
 
 use App\Models\stadium;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
 
 class StadiumController extends Controller
 {
     public function show(){
         $stadiums = stadium::all();
-        return view('',['stadiums'=>$stadiums]);
-    }
+        return view('stadium.stadiumIndex',compact('stadiums'));
+    }   
 
-    public function create(Request $request){
+    public function create(){
+        return view('stadium.stadiumCreate');
+    }
+    public function create_handle(Request $request){
         $request->validate([
             'stadium_name'=>'required|string|unique:stadiums|max:255',
             'capacity'=>'required|integer|min:1',
             'location'=>'required|string|max:255',
         ]);
-        $stadiums = stadium::create([
-            'stadium_name'=>$request->input('stadium_name'),
-            'capacity'=>$request->input('capacity'),
-            'location'=>$request->input('location'),
+        stadium::create([
+            'stadium_name'=>$request->stadium_name,
+            'capacity'=>$request->capacity,
+            'location'=>$request->location,
         ]);
-        return ;
+        return redirect('stadiums')->with('status', 'Stadium created successfully');
     }
 
-    public function update(Request $request, stadium $stadium_id){
+    public function update(int $stadium_id){
         $stadiums = stadium::findOrFail($stadium_id);
+        return view('stadium.stadiumUpdate',compact('stadiums'));
+    }
+
+    public function update_handle(Request $request, int $stadium_id){
         $request->validate([
             'stadium_name'=>'required|string|unique:stadiums|max:255',
             'capacity'=>'required|integer|min:1',
             'location'=>'required|string|max:255',
         ]);
-        $stadiums->update([
-            'stadium_name'=>$request->input('stadium_name'),
-            'capacity'=>$request->input('capacity'),
-            'location'=>$request->input('location'),
+        stadium::findOrFail($stadium_id)->update([
+            'stadium_name'=>$request->stadium_name,
+            'capacity'=>$request->capacity,
+            'location'=>$request->location,
         ]);
-        return ;
+        return redirect('stadiums')->with('status', 'Stadium updated successfully');
     }
 
-    public function destroy(stadium $stadium_id){
-        $stadiums=stadium::findOrFail($stadium_id);
-        $stadiums->delete();
-        return ;
+    public function destroy(int $stadium_id){
+        stadium::findOrFail($stadium_id)->delete();
+        return redirect('stadiums')->with('status', 'Stadium deleted successfully');
     }
 }

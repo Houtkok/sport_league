@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('tickets', function (Blueprint $table) {
             $table->increments('ticket_id');
-            $table->string('seat_num');
             $table->string('seat_type');
             $table->decimal('price',10,2);
             $table->unsignedInteger('qty');

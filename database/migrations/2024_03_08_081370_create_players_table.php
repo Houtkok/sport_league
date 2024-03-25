@@ -18,9 +18,7 @@ return new class extends Migration
             $table->date('dob');
             $table->string('position');
             $table->unsignedInteger('national_id');
-            $table->unsignedInteger('scorer_id');
             $table->foreign('national_id')->references('national_id')->on('nationals')->onDelete('cascade');
-            $table->foreign('scorer_id')->references('scorer_id')->on('scorers')->onDelete('cascade');
             $table->timestamps();
         });
     }

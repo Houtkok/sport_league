@@ -4,36 +4,41 @@ namespace App\Http\Controllers;
 
 use App\Models\national;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
 
 class NationalController extends Controller
 {
     public function show(){
         $nationals = national::all();
-        return view('',['nationals'=>$nationals]);
+        return view('national.nationalIndex',compact('nationals'));
     }
-    public function create(Request $request){
+    
+    public function create(){
+        return view('national.nationalCreate');
+    }
+    public function create_handle(Request $request){
         $request->validate([
             'national_name'=>'required|string|unique:nationals|max:255',
         ]);
-        $nationals = national::create([
-            'national_name'=>$request->input('national_name'),
+        national::create([
+            'national_name'=>$request->national_name,
         ]);
-        return ;
+        return redirect('nationals')->with('status','National created succesfully');
     }
-    public function update(Request $request, national $national_id){
+    public function update(int $national_id){
         $national = national::findOrFail($national_id);
+        return view('national.nationalUpdate',compact('national'));
+    }
+    public function update_handle(Request $request, int $national_id){
         $request->validate([
             'national_name'=>'required|string|unique:nationals|max:255',
         ]);
-        $national->update([
-            'national_name'=>$request->input('national_name'),
+        national::findOrFail($national_id)->update([
+            'national_name'=>$request->national_name,
         ]);
-        return ;
+        return redirect('nationals')->with('status','National updated succesfully');
     }
-    public function destroy(national $national_id){
-        $national=national::findOrFail($national_id);
-        $national->delete();
-        return ;
+    public function destroy(int $national_id){
+        national::findOrFail($national_id)->delete();
+        return redirect('nationals')->with('status','National deleted succesfully');
     }
 }

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class coach extends Model
 {
     use HasFactory;
+    protected $primaryKey='coach_id';
     protected $fillable = [
         'coach_name',
     ];

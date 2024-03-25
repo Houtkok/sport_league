@@ -8,7 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class player extends Model
 {
     use HasFactory;
+    protected $primaryKey='player_id';
     protected $fillable = [
+        'player_id',
         'player_fname',
         'player_lname',
         'dob',
@@ -18,8 +20,4 @@ class player extends Model
     public function national(){
         return $this->belongsTo(National::class);
     }
-    public function scorer(){
-        return $this->hasOne(Scorer::class);
-    }
-    
 }

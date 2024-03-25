@@ -3,61 +3,68 @@
 namespace App\Http\Controllers;
 
 use App\Models\player;
+use App\Models\national;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
 
 class PlayerController extends Controller
 {
     public function show(){
         $players = player::all();
-        return view('',['players'=>$players]);;
+        $nationals = national::all();
+        return view('player.playerIndex',compact('players','nationals'));
     }
-    public function create(Request $request){
+    
+    public function create(){
+        $nationals = national::all();
+        return view('player.playerCreate',compact('nationals'));
+    }
+    public function create_handle(Request $request){
+        $request->validate([
+            'player_id'=>'required|integer|unique:players',
+            'player_fname'=>'required|string|max:255',
+            'player_lname'=>'required|string|max:255',
+            'dob'=>'required|date',
+            'position'=>'required|string',
+            'national_id'=>'required|integer|exists:nationals,national_id',
+        ]);
+        player::create([
+            'player_id'=>$request->player_id,
+            'player_fname'=>$request->player_fname,
+            'player_lname'=>$request->player_lname,
+            'dob'=>$request->dob,
+            'position'=>$request->position,
+            'national_id'=>$request->national_id,
+        ]);
+        return redirect('players')->with('status','Player created successfully');
+    }
+
+    public function update(int $player_id){
+        $player = player::findOrFail($player_id);
+        $nationals = national::all();
+        return view('player.playerUpdate',compact('player','nationals'));
+    }
+    public function update_handle(Request $request, int $player_id){
+        
         $request->validate([
             'player_id'=>'required|integer|unique:players',
             'player_fname'=>'required|string|max:255',
             'player_lanme'=>'required|string|max:255',
             'dob'=>'required|date',
             'position'=>'required|string',
-            'national_id'=>'required|integer|exists:national_id',
-            'scorer_id'=>'required|integer|exists:scorer_id',
+            'national_id'=>'required|integer|exists:national,national_id',
         ]);
-        $players = player::create([
-            'player_id'=>$request->input('player_id'),
-            'player_fname'=>$request->input('player_fname'),
-            'player_lanme'=>$request->input('player_lname'),
-            'dob'=>$request->input('dob'),
-            'position'=>$request->input('position'),
-            'national_id'=>$request->input('national_id'),
-            'scorer_id'=>$request->input('scorer_id'),
+        player::findOrFail($player_id)->update([
+            'player_id'=>$request->player_id,
+            'player_fname'=>$request->player_fname,
+            'player_lanme'=>$request->player_lname,
+            'dob'=>$request->dob,
+            'position'=>$request->position,
+            'national_id'=>$request->national_id,
         ]);
-        return ;
-    }
-    public function update(Request $request, player $player_id){
-        $players = player::findOrFail($player_id);
-        $request->validate([
-            'player_id'=>'required|integer|unique:players',
-            'player_fname'=>'required|string|max:255',
-            'player_lanme'=>'required|string|max:255',
-            'dob'=>'required|date',
-            'position'=>'required|string',
-            'national_id'=>'required|integer|exists:national_id',
-            'scorer_id'=>'required|integer|exists:scorer_id',
-        ]);
-        $players->update([
-            'player_id'=>$request->input('player_id'),
-            'player_fname'=>$request->input('player_fname'),
-            'player_lanme'=>$request->input('player_lname'),
-            'dob'=>$request->input('dob'),
-            'position'=>$request->input('position'),
-            'national_id'=>$request->input('national_id'),
-            'scorer_id'=>$request->input('scorer_id'),
-        ]);
-        return ;
+        return redirect('players')->with('status','UpdatePlayer');
     }
     public function destroy(player $player_id){
-        $players=player::findOrFail($player_id);
-        $players->delete();
-        return ;
+        player::findOrFail($player_id)->delete();
+        return redirect('players')->with('stutus','Player Delete');
     }
 }

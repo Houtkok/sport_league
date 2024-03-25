@@ -4,40 +4,46 @@ namespace App\Http\Controllers;
 
 use App\Models\coach;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
-
 
 class CoachController extends Controller
 {
     public function show(){
         $coaches = coach::all();
-        return view('',['coaches'=>$coaches]);
+        return view('coach.coachIndex',compact('coaches'));
+    }
+    
+    public function create(){
+        return view('coach.coachCreate');
     }
 
-    public function create(Request $request){
+    public function create_handle(Request $request){
         $request->validate([
             'coach_name'=>'required|string|unique:coaches|max:255',
         ]);
-        $coach = coach::create([
-            'coach_name'=>$request->input('coach_name'),
+        coach::create([
+            'coach_name'=>$request->coach_name,
         ]);
-        return ['coach'=>$coach];
+        return redirect()->route('coach.show')->with('status', 'Coach created successfully');
     }
 
-    public function update(Request $request, coach $coach_id){
+    public function update(int $coach_id){
         $coach = coach::findOrFail($coach_id);
-        $request->validate([
-            'coach_name'=>'required|string|unique:nationals|max:255',
-        ]);
-        $coach->update([
-            'coach_name'=>$request->input('coach_name'),
-        ]);
-        return ['coach_name'=>$coach];
+        return view('coach.coachUpdate',compact('coach'));
     }
 
-    public function destroy(coach $coach_id){
-        $national=coach::findOrFail($coach_id);
-        $national->delete();
-        return ;
+    public function update_handle(Request $request, int $coach_id){
+        $request->validate([
+            'coach_name'=>'required|string|unique:coaches|max:255',
+        ]);
+        coach::findOrFail($coach_id)->update([
+            'coach_name'=>$request->coach_name,
+        ]);
+        return redirect()->route('coach.show')->with('status', 'Coach updated successfully');
     }
+
+    public function destroy(int $coach_id){
+        coach::findOrFail($coach_id)->delete();
+        return redirect()->route('coach.show')->with('status', 'Coach deleted successfully');
+    }
+    
 }

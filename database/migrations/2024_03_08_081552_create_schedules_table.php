@@ -13,11 +13,14 @@ return new class extends Migration
     {
         Schema::create('schedules', function (Blueprint $table) {
             $table->increments('match_id');
+            $table->string('match_name');
             $table->date('match_time');
             $table->unsignedInteger('stadium_id');
-            $table->unsignedInteger('team_id');
+            $table->unsignedInteger('team_A');
+            $table->unsignedInteger('team_B');
             $table->foreign('stadium_id')->references('stadium_id')->on('stadia')->onDelete('cascade');
-            $table->foreign('team_id')->references('team_id')->on('teams')->onDelete('cascade');
+            $table->foreign('team_A')->references('team_id')->on('teams')->onDelete('cascade');
+            $table->foreign('team_B')->references('team_id')->on('teams')->onDelete('cascade');
             $table->timestamps();
         });
     }
