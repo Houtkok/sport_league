@@ -1,3 +1,4 @@
+@include('manubar') 
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,24 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <title>Admin</title>
-    <style>
-        div{
-            border: 1px solid black;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 0;
-        }
-        a{
-            display: inline;
-            text-decoration: none;
-            color: white;
-        }
-        a:hover{
-            color: white;
-            text-decoration: none;
-        }
-    </style>
 </head>
 <body>
     @if(session('status'))
@@ -37,6 +20,7 @@
                 <th>Stadium</th>
                 <th>Team One</th>
                 <th>Team Two</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -50,14 +34,14 @@
                     <td>{{ $schedule->team_B}}</td>
                     <td>
                         <a class="btn btn-info" href="#">View</a>
-                        <a class="btn btn-primary" href="{{ route('schedule.update', ['schedule_id' => $schedule->match_id]) }}">Edit</a>
-                        <a class="btn btn-danger" href="{{ route('schedule.destroy', ['schedule_id' => $schedule->match_id]) }}" 
+                        <a class="btn btn-primary" href="{{ route('schedules.update', ['match_id' => $schedule->match_id]) }}">Edit</a>
+                        <a class="btn btn-danger" href="{{ route('schedules.destroy', ['match_id' => $schedule->match_id]) }}" 
                             onclick="event.preventDefault(); 
                                      if(confirm('Are you sure you want to delete this coach?')) 
                                      { document.getElementById('delete-form-{{ $schedule->match_id }}').submit(); }">
                             Delete
                         </a>
-                        <form id="delete-form-{{ $schedule->schedule_id }}" action="{{ route('schedule.destroy', ['schedule_id' => $schedule->schedule_id]) }}" method="POST" style="display: none;">
+                        <form id="delete-form-{{ $schedule->match_id }}" action="{{ route('schedules.destroy', ['match_id' => $schedule->match_id]) }}" method="POST" style="display: none;">
                             @csrf
                             @method('DELETE')
                         </form>

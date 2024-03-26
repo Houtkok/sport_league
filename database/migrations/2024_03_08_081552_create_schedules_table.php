@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('schedules', function (Blueprint $table) {
             $table->increments('match_id');
             $table->string('match_name');
-            $table->date('match_time');
+            $table->string('match_time');
             $table->unsignedInteger('stadium_id');
             $table->unsignedInteger('team_A');
             $table->unsignedInteger('team_B');

@@ -1,36 +1,40 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\CoachController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\NationalController;
-use App\Http\Controllers\PlayerController;
-use App\Http\Controllers\ScheduleController;
-use App\Http\Controllers\StadiumController;
 use App\Http\Controllers\TeamController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\CoachController;
+use App\Http\Controllers\PlayerController;
 use App\Http\Controllers\TicketController;
+use App\Http\Controllers\StadiumController;
+use App\Http\Controllers\NationalController;
+use App\Http\Controllers\ScheduleController;
 
 Route::get('/', function () {
-    return view('home');
+    return view('home1');
 });
-Route::get('/adminMode', function () {
-    return view('adminMode');
-});
-Route::get('/coach',[CoachController::class,'show'])->name('coach.show');
-Route::get('/coach/create',[CoachController::class,'create'])->name('coach.create');
-Route::post('/coach/create',[CoachController::class,'create_handle'])->name('coach.create.handle');
-Route::get('/coach/{coach_id}/update',[CoachController::class,'update'])->name('coach.update');
-Route::put('/coach/{coach_id}/update',[CoachController::class,'update_handle'])->name('coach.update.handle');
-Route::delete('/coach/{coach_id}',[CoachController::class,'destroy'])->name('coach.destroy');
-// Route::prefix('api')->group(function(){
-    //users
-    // Route::get('/coaches',[CoachController::class,'show'])      ->name('coaches.show');
-    // Route::get('/coaches',[CoachController::class,'create'])    ->name('coaches.show');
-    // Route::get('/coaches',[CoachController::class,'update'])    ->name('coaches.show');
-    // Route::get('/coaches',[CoachController::class,'destroy'])   ->name('coaches.show');
 
+Route::get('/ticket',function(){
+    return view('ticket');
+});
+Route::get('/menu',function(){
+    return view('manubar');
+});
+Auth::routes();
+// Route::middleware(['is_admin'])->group(function(){
+    Route::get('/adminMode', function () {
+        return view('adminMode');
+    })->name('adminMode');
     //coach
+    Route::get('/coach',[CoachController::class,'show'])->name('coach.show');
+    Route::get('/coach/create',[CoachController::class,'create'])->name('coach.create');
+    Route::post('/coach/create',[CoachController::class,'create_handle'])->name('coach.create.handle');
+    Route::get('/coach/{coach_id}/update',[CoachController::class,'update'])->name('coach.update');
+    Route::put('/coach/{coach_id}/update',[CoachController::class,'update_handle'])->name('coach.update.handle');
+    Route::delete('/coach/{coach_id}',[CoachController::class,'destroy'])->name('coach.destroy');
+    
     //national
     Route::get('/nationals',[NationalController::class,'show'])->name('nationals.show');
     Route::get('/nationals/create',[NationalController::class,'create'])->name('nationals.create');
@@ -51,10 +55,9 @@ Route::delete('/coach/{coach_id}',[CoachController::class,'destroy'])->name('coa
     Route::get('/schedules',[ScheduleController::class,'show'])->name('schedules.show');
     Route::get('/schedules/create',[ScheduleController::class,'create'])->name('schedules.create');
     Route::post('/schedules/create',[ScheduleController::class,'create_handle'])->name('schedules.create.handle');
-    Route::get('/schedules/{schedule_id}/update',[ScheduleController::class,'update'])->name('schedules.update');
-    Route::put('/schedules/{schedule_id}/update',[ScheduleController::class,'update_handle'])->name('schedules.update.handle');
-    Route::delete('/schedules/{schedule_id}',[ScheduleController::class,'destroy'])->name('schedules.destroy');
-
+    Route::get('/schedules/{match_id}/update',[ScheduleController::class,'update'])->name('schedules.update');
+    Route::put('/schedules/{match_id}/update',[ScheduleController::class,'update_handle'])->name('schedules.update.handle');
+    Route::delete('/schedules/{match_id}',[ScheduleController::class,'destroy'])->name('schedules.destroy');
     //stadium
     Route::get('/stadiums',[StadiumController::class,'show'])->name('stadiums.show');
     Route::get('/stadiums/create',[StadiumController::class,'create'])->name('stadiums.create');
@@ -81,3 +84,6 @@ Route::delete('/coach/{coach_id}',[CoachController::class,'destroy'])->name('coa
     Route::put('/tickets/purchase',[TicketController::class,'purchase'])->name('ticket.purchase');
     
 // });
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/admin/home', [App\Http\Controllers\HomeController::class, 'adminHome'])->name('admin.home')->middleware('is_admin');

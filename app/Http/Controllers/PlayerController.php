@@ -39,29 +39,28 @@ class PlayerController extends Controller
     }
 
     public function update(int $player_id){
-        $player = player::findOrFail($player_id);
+        $players = player::findOrFail($player_id);
         $nationals = national::all();
-        return view('player.playerUpdate',compact('player','nationals'));
+        return view('player.playerUpdate',compact('players','nationals'));
     }
     public function update_handle(Request $request, int $player_id){
-        
         $request->validate([
             'player_id'=>'required|integer|unique:players',
             'player_fname'=>'required|string|max:255',
-            'player_lanme'=>'required|string|max:255',
+            'player_lname'=>'required|string|max:255',
             'dob'=>'required|date',
             'position'=>'required|string',
-            'national_id'=>'required|integer|exists:national,national_id',
+            'national_id'=>'required|integer|exists:nationals,national_id',
         ]);
-        player::findOrFail($player_id)->update([
+        player::create([
             'player_id'=>$request->player_id,
             'player_fname'=>$request->player_fname,
-            'player_lanme'=>$request->player_lname,
+            'player_lname'=>$request->player_lname,
             'dob'=>$request->dob,
             'position'=>$request->position,
             'national_id'=>$request->national_id,
         ]);
-        return redirect('players')->with('status','UpdatePlayer');
+        return redirect('players')->with('status','Update Player');
     }
     public function destroy(player $player_id){
         player::findOrFail($player_id)->delete();

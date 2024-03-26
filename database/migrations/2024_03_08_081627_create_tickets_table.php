@@ -17,9 +17,7 @@ return new class extends Migration
             $table->decimal('price',10,2);
             $table->unsignedInteger('qty');
             $table->unsignedInteger('match_id');
-            $table->unsignedInteger('user_id');
             $table->foreign('match_id')->references('match_id')->on('schedules')->onDelete('cascade');
-            $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

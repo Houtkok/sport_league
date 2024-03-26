@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class schedule extends Model
 {
     use HasFactory;
-    protected $primaryKey='schedule_id';
+    protected $primaryKey='match_id';
     protected $fillable = [
         'match_time',
         'match_name',
@@ -17,10 +17,10 @@ class schedule extends Model
         'team_B',
     ];
     public function stadium(){
-        return $this->belongsTo(stadium::class);
+        return $this->belongsTo(Stadium::class);
     }
     public function team(){
-        return $this->hasMany(team::class);
+        return $this->hasMany(Team::class);
     }
     
 }

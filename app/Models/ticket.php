@@ -14,10 +14,9 @@ class ticket extends Model
         'price',
         'qty',
         'match_id',
-        'user_id',
     ];
     public function match(){
-        return $this->belongsTo(schedule::class);
+        return $this->belongsTo(Schedule::class);
     }
     public function user(){
         return $this->belongsTo(User::class);

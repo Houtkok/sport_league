@@ -20,18 +20,18 @@ class ScheduleController extends Controller
     }
     public function create_handle(Request $request){
         $request->validate([
-            'match_time'=>'required|date',
+            'match_time'=>'required|string|max:255',
             'match_name'=>'required|string|max:255',
-            'stadium_id'=>'required|integer|exists:stadiums,stadium_id',
+            'stadium_id'=>'required|integer|exists:stadia,stadium_id',
             'team_A'=>'required|integer|exists:teams,team_id',
             'team_B'=>'required|integer|exists:teams,team_id',
         ]);
         schedule::create([
             'match_time'=>$request->match_time,
-            'match_name'=>'required|string|unique:nationals|max:255',
+            'match_name'=>$request->match_name,
             'stadium_id'=>$request->stadium_id,
-            'team_A'=>$request->team_id,
-            'team_B'=>$request->team_id,
+            'team_A'=>$request->team_A,
+            'team_B'=>$request->team_B,
         ]);
         return redirect('schedules')->with('status','Schedule created sucessfully');
     }
@@ -42,16 +42,18 @@ class ScheduleController extends Controller
     }
     public function update_handle(Request $request, int $match_id){ 
         $request->validate([
-            'match_time'=>'required|date',
-            'stadium_id'=>'required|integer|exists:stadium_id',
+            'match_time'=>'required|string|max:255',
+            'match_name'=>'required|string|max:255',
+            'stadium_id'=>'required|integer|exists:stadia,stadium_id',
             'team_A'=>'required|integer|exists:teams,team_id',
             'team_B'=>'required|integer|exists:teams,team_id',
         ]);
         schedule::findOrFail($match_id)->update([
             'match_time'=>$request->match_time,
+            'match_name'=>$request->match_name,
             'stadium_id'=>$request->stadium_id,
-            'team_A'=>$request->team_id,
-            'team_B'=>$request->team_id,
+            'team_A'=>$request->team_A,
+            'team_B'=>$request->team_B,
         ]);
         return redirect('schedules')->with('status','Schedule updated successfully');
     }

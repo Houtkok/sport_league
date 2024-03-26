@@ -17,7 +17,7 @@ class StadiumController extends Controller
     }
     public function create_handle(Request $request){
         $request->validate([
-            'stadium_name'=>'required|string|unique:stadiums|max:255',
+            'stadium_name'=>'required|string|unique:stadia|max:255',
             'capacity'=>'required|integer|min:1',
             'location'=>'required|string|max:255',
         ]);
@@ -36,7 +36,7 @@ class StadiumController extends Controller
 
     public function update_handle(Request $request, int $stadium_id){
         $request->validate([
-            'stadium_name'=>'required|string|unique:stadiums|max:255',
+            'stadium_name'=>'required|string|unique:stadia|max:255',
             'capacity'=>'required|integer|min:1',
             'location'=>'required|string|max:255',
         ]);

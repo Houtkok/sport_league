@@ -1,0 +1,30 @@
+h1{
+    text-align: center;
+    
+}
+.container {
+    display: flex; /* Set display to flex */
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+/* CSS for the box */
+.box {
+    font-family: PremierSans-Regular, Arial, Helvetica Neue, Helvetica, sans-serif;
+  
+    color: #37003c;
+    
+    
+
+    cursor: pointer;
+    width: 230px; /* Width of each box */
+    height: 120px; /* Height of each box */
+    background-color: #f0f0f0; /* Background color of each box */
+    border: 2px solid #333; /* Border of each box */
+    border-radius: 8px; /* Border radius to make the corners rounded */
+    margin: 10px; /* Margin around each box */
+    display: flex; /* Nested display flex to center content */
+    justify-content: center; /* Center content horizontally */
+    align-items: center; /* Center content vertically */
+    
+    
+}

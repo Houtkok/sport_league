@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\schedule;
 use App\Models\ticket;
 use Illuminate\Http\Request;
 
@@ -9,38 +10,46 @@ class TicketController extends Controller
 {
     public function show(){
         $tickets = ticket::all();
-        return view('ticket.ticketIndex',compact('tickets'));
-    }
+        $schedules = schedule::all();
+        return view('ticket.ticketIndex',compact('tickets','schedules'));
+        }
     
     public function create(){
-        return view('ticket.ticketCreate');
+        $schedules = schedule::all();
+        return view('ticket.ticketCreate',compact('schedules'));
     }
     public function create_handle(Request $request){
         $request->validate([
             'seat_type'=>'required|string|max:255',
-            'price'=>'required|float',
+            'price'=>'required',
             'qty'=>'required|integer|min:0',
-            'match_id'=>'required|integer|exists:match_id',
-            'user_id'=>'required|integer|exists:user_id',
+            'match_id'=>'required|integer|exists:schedules,match_id',
         ]);
         ticket::create([
             'seat_type'=>$request->seat_type,
+            'price'=>$request->price,
+            'qty'=>$request->qty,
             'match_id'=>$request->match_id,
-            'user_id'=>$request->user_id,
         ]);
         return redirect('tickets')->with('status', 'Ticket created successfully');
     }
-    public function update(Request $request, int $ticket){
-        $tickets = ticket::findOrFail($ticket);
+    public function update(int $ticket_id){
+        $schedules = schedule::all();
+        $tickets = ticket::findOrFail($ticket_id);
+        return view('ticket.ticketUpdate',compact('schedules','tickets'));
+    }
+    public function update_handle(Request $request, int $ticket_id){
         $request->validate([
             'seat_type'=>'required|string|max:255',
-            'match_id'=>'required|integer|exists:match_id',
-            'user_id'=>'required|integer|exists:user_id',
+            'price'=>'required',
+            'qty'=>'required|integer|min:0',
+            'match_id'=>'required|integer|exists:schedules,match_id',
         ]);
-        $tickets->update([
+        ticket::findOrFail($ticket_id)->update([
             'seat_type'=>$request->seat_type,
+            'price'=>$request->price,
+            'qty'=>$request->qty,
             'match_id'=>$request->match_id,
-            'user_id'=>$request->user_id,
         ]);
         return redirect('tickets')->with('status', 'Ticket updated successfully');
     }
@@ -49,27 +58,4 @@ class TicketController extends Controller
         ticket::findOrFail($ticket_id)->delete();
         return redirect('tickets')->with('status', 'Ticket deleted successfully');
     }
-
-    // public function purchase(Request $request){
-    //     $request->validate([
-    //         'seat_type'=>'required|string|max:255',
-    //         'match_id'=>'required|integer|exists:match_id',
-    //         'user_id'=>'required|integer|exists:user_id',
-    //         'qty'=>'required|integer|min:1',
-    //     ]);
-    //     $match_id=$request->input('match_id');
-    //     $qty=$request->input('qty');
-
-    //     $tickets=Ticket::where ('match_id',$match_id)->take($qty)->get();
-    //     if($tickets->count()<$qty){
-    //         return false;
-    //     }
-    //     foreach($tickets as $ticket){
-    //         $ticket->user_id=$request->input('user_id');
-    //         $ticket->save();
-    //     }
-    //     $remainQty=$ticket->count()-$qty;
-    //     Ticket::where('match_id',$match_id)->take($remainQty)->update(['user_id'=>null]);
-    //     return ;
-    // }
 }
